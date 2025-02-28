@@ -1,28 +1,31 @@
-name: Preparant per producció
-run-name: ${{ github.actor }} està pujant l'aplicació a PROD  🚀
-on: [push]
-jobs:
-  Pujar-a-produccio-amb-SCP:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Obtenint el codi del respositori
-        uses: actions/checkout@v4
-      
-      - name: Configurant l'entorn
-        run: |
-          echo "Configurant l'entorn"
-          echo "Key: ${{ secrets.PROD_KEY }}"
-          echo "User: ${{ secrets.PROD_USER }}"
-          echo "Host: ${{ secrets.PROD_HOST }}"
-          echo "${{ github.workspace }}"
+name: Deploy Vue App to Production
+run-name: ${{ github.actor }} està desplegant Vue a Producció 🚀
+on:
+  push:
+    branches:
+      - main
 
-      - name: scp a produccio
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy via SCP
         run: |
           echo "${{ secrets.PROD_KEY }}" > ~/prod_key.pem
           chmod 600 ~/prod_key.pem
-          cd ${{ github.workspace }}
-          echo "Action desplegant a produccio" > ./web/last_deploy.txt
-          date >> ./web/last_deploy.txt
-          scp -r -o stricthostkeychecking=no -o UserKnownHostsFile=/dev/null -i "~/prod_key.pem" ./web/* ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/home/${{secrets.PROD_USER}}/web/${{secrets.PROD_USER}}.daw.inspedralbes.cat/public_html/
-          
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+          scp -r -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i "~/prod_key.pem" ./dist/* ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/home/***/web/***.***/public_html/
