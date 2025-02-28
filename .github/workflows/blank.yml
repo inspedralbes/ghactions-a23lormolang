@@ -21,4 +21,4 @@ jobs:
         run: |
           echo "${{ secrets.PROD_KEY }}" > ~/prod_key.pem
           chmod 600 ~/prod_key.pem
-          scp -r -o stricthostkeychecking=no -o UserKnownHostsFile=/dev/null -i "~/prod_key.pem" ./my-calculator/dist/* ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/home/ebota/web/actions.daw.inspedralbes.cat/public_html/
+          scp -r -o stricthostkeychecking=no -o UserKnownHostsFile=/dev/null -i "~/prod_key.pem" ./my-calculator/dist* ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/home/${{secrets.PROD_USER}}/web/${{secrets.PROD_USER}}.daw.inspedralbes.cat/public_html/
