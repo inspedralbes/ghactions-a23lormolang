@@ -11,9 +11,9 @@ jobs:
       - name: Configurant l'entorn
         run: |
           echo "Configurant l'entorn"
-          echo "${{ secrets.PROD_KEY }}"
-          echo "${{ secrets.PROD_USER }}"
-          echo "${{ secrets.PROD_HOST }}"
+          echo "Key: ${{ secrets.PROD_KEY }}"
+          echo "User: ${{ secrets.PROD_USER }}"
+          echo "Host: ${{ secrets.PROD_HOST }}"
           echo "${{ github.workspace }}"
 
       - name: scp a produccio
