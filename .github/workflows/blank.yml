@@ -7,6 +7,14 @@ jobs:
     steps:
       - name: Obtenint el codi del respositori
         uses: actions/checkout@v4
+      
+      - name: Configurant l'entorn
+        run: |
+          echo "Configurant l'entorn"
+          echo "${{ secrets.PROD_KEY }}"
+          echo "${{ secrets.PROD_USER }}"
+          echo "${{ secrets.PROD_HOST }}"
+          echo "${{ github.workspace }}"
 
       - name: scp a produccio
         run: |
