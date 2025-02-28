@@ -1,37 +1,24 @@
 name: Deploy Vue App to Production
-run-name: ${{ github.actor }} està desplegant Vue a Producció 🚀
-on:
-  push:
-    branches:
-      - main
+
+on: [push]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
       - name: Install dependencies
-        run: 
-          pwd
-          npm install
-        working-directory: my-caluclator/
+        run: npm install
+        working-directory: ./my-calculator
 
-      - name: Build project
-        run: 
-          pwd
-          npm run build
-        working-directory: my-caluclator/
+      - name: Build Vue App
+        run: npm run build
+        working-directory: ./my-calculator
 
-      - name: Deploy via SCP
+      - name: Deploy to Production
         run: |
           echo "${{ secrets.PROD_KEY }}" > ~/prod_key.pem
           chmod 600 ~/prod_key.pem
-          scp -r -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i "~/prod_key.pem" ./dist/* ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/home/***/web/***.***/public_html/
+          scp -r -o stricthostkeychecking=no -o UserKnownHostsFile=/dev/null -i "~/prod_key.pem" ./my-calculator/dist/* ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/home/ebota/web/actions.daw.inspedralbes.cat/public_html/
