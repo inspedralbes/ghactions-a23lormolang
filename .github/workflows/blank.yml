@@ -22,6 +22,7 @@ jobs:
         run: 
           pwd
           npm install
+        working-directory: my-caluclator/
 
       - name: Build project
         run: 
