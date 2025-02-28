@@ -30,6 +30,7 @@ const showNumber = (num) => {
 .button {
   padding: 20px;
   background: lightgray;
+  color: black;
   text-align: center;
   cursor: pointer;
   border-radius: 5px;
