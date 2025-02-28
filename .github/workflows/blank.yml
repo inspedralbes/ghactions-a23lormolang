@@ -24,7 +24,10 @@ jobs:
           npm install
 
       - name: Build project
-        run: npm run build
+        run: 
+          pwd
+          npm run build
+        working-directory: ./my-caluclator/
 
       - name: Deploy via SCP
         run: |
